@@ -108,7 +108,6 @@ const openIssueModal = (id) => {
 };
 
 function applyFilters() {
-  // 1. Show loading state
   issueContainer.innerHTML =
     '<div class="col-span-full w-full flex justify-center items-center py-20"><span class="loading loading-bars loading-xl text-[#4A00FF]"></span></div>';
 
