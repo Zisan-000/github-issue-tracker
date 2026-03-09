@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
       type="text/css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,16 +19,9 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
+
     <title>Github Issue Tracker</title>
-    <link
-      rel="shortcut icon"
-      href="./assets/github-logo.png"
-      type="image/x-icon"
-    />
     <style>
       body {
         font-family: "Geist", sans-serif;
@@ -36,202 +29,77 @@
       }
     </style>
   </head>
-  <body>
-    <header>
-      <nav class="mb-8">
-        <div class="navbar bg-base-100 shadow-sm">
-          <div class="flex-1 pl-10">
-            <div class="flex justify-start items-center">
-              <img
-                class="w-8"
-                src="./assets/github-logo.png"
-                alt="GitHub Logo"
-              />
-              <a class="btn btn-ghost text-xl">GitHub Issue Tracker</a>
-            </div>
-          </div>
-          <div class="flex gap-3 pr-10">
-            <label
-              class="input input-bordered flex items-center gap-2 w-full max-w-xs"
-            >
-              <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
-              <input
-                type="text"
-                class="grow"
-                id="searchInput"
-                placeholder="Search issues..."
-              />
-            </label>
-            <div>
-              <button
-                class="btn w-32 bg-[#4A00FF] text-white border-none hover:bg-[#4A00FF]/90 rounded-md"
-              >
-                + New Issue
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-    <main class="max-w-[1120px] mx-auto p-4">
-      <section class="flex gap-4 mb-6">
-        <button
-          id="btn-all"
-          class="btn w-[120px] bg-[#4A00FF] text-white border-none hover:bg-[#4A00FF]/90 transition-colors"
-        >
-          All
-        </button>
-        <button
-          id="btn-open"
-          class="btn w-[120px] bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"
-        >
-          Open
-        </button>
-        <button
-          id="btn-closed"
-          class="btn w-[120px] bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"
-        >
-          Closed
-        </button>
-      </section>
 
-      <section
-        class="mb-8 bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center"
-      >
-        <div class="flex justify-start items-center gap-4">
-          <div
-            class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center"
-          >
-            <img class="w-7" src="./assets/Aperture.png" alt="Aperture Icon" />
-          </div>
-          <div>
-            <h2 id="total-issues" class="text-xl font-bold text-gray-900"></h2>
-            <p class="text-sm text-gray-400 mt-0.5">
-              Track and manage your project issues
-            </p>
-          </div>
-        </div>
+  <body class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-[520px] shadow-lg rounded-xl p-6 md:p-10">
+      <div class="text-center mb-8">
+        <img
+          src="./assets/github-logo.png"
+          alt="Github Logo"
+          class="mx-auto w-16 mb-4"
+        />
+        <h1 class="font-bold text-2xl text-gray-900">GitHub Issue Tracker</h1>
+        <p class="font-light text-sm text-[#64748B] mt-1">
+          Sign in to manage your issues
+        </p>
+      </div>
 
-        <div class="flex items-center gap-5 pr-2">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 bg-[#00A96E] rounded-full"></span>
-            <span class="text-sm font-medium text-gray-700">Open</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 bg-[#8250df] rounded-full"></span>
-            <span class="text-sm font-medium text-gray-700">Closed</span>
-          </div>
-        </div>
-      </section>
+      <div class="flex flex-col gap-5">
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend font-semibold text-gray-700">
+            Username
+          </legend>
+          <input
+            type="text"
+            class="input w-full bg-gray-50 border-gray-200"
+            placeholder="Enter Username"
+            id="username"
+          />
+          <p class="text-purple-600 text-xs mt-1 font-medium">Default: admin</p>
+        </fieldset>
 
-      <div
-        id="issue-container"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10"
-      ></div>
-      <!-- main issues card-->
-      <section>
-        <input type="checkbox" id="my_modal_6" class="modal-toggle" />
-        <div class="modal" role="dialog">
-          <div class="modal-box w-11/12 max-w-2xl" id="dynamic-modal-content">
-            <h3 class="text-lg font-bold">Fix broken image uploads</h3>
-            <div class="flex items-center gap-2 py-2">
-              <div
-                class="p-1 text-center bg-[#00A96E] rounded-3xl w-20 text-white text-sm"
-              >
-                Opened
-              </div>
-              <p class="text-sm text-gray-500">• Opened by Fahim Ahmed •</p>
-              <p class="text-sm text-gray-500">22/02/2026</p>
-            </div>
-            <div class="py-3 flex gap-1">
-              <div
-                class="bg-[#FEECEC] text-[#EF4444] border text-[10px] rounded-3xl px-2 py-1 flex items-center gap-1"
-              >
-                <i class="fa-solid fa-bug"></i>Bug
-              </div>
-              <div
-                class="bg-[#FFF8DB] border text-[#D97706] text-[10px] rounded-3xl px-2 py-1 flex items-center gap-1"
-              >
-                <i class="fa-regular fa-life-ring"></i>Help Wanted
-              </div>
-            </div>
-            <p class="py-4">
-              The navigation menu doesn't collapse properly on mobile devices.
-              Need to fix the responsive behavior.
-            </p>
-            <div class="flex justify-between p-4 bg-gray-50 rounded-md">
-              <div>
-                <h1 class="text-gray-500">Assignee:</h1>
-                <p class="font-bold">Fahim Ahmed</p>
-              </div>
-              <div>
-                <h1 class="text-gray-500">Priority:</h1>
-                <div class="px-4 bg-red-600 rounded-2xl text-white">
-                  <span class="text-xs font-medium">HIGH</span>
-                </div>
-              </div>
-              <div></div>
-            </div>
-            <div class="modal-action">
-              <label for="my_modal_6" class="btn bg-[#4A00FF] text-white"
-                >Close</label
-              >
-            </div>
-          </div>
-        </div>
-        <!-- card -->
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend font-semibold text-gray-700">
+            Password
+          </legend>
+          <input
+            type="password"
+            class="input w-full bg-gray-50 border-gray-200"
+            placeholder="Enter Password"
+            id="password"
+          />
+          <p class="text-purple-600 text-xs mt-1 font-medium">
+            Default: admin123
+          </p>
+        </fieldset>
+
+        <button
+          onclick="signIn()"
+          class="btn btn-primary rounded-lg w-full mt-2"
+        >
+          Sign In
+        </button>
+      </div>
+
+      <div class="divider my-8 text-gray-400 text-sm">OR</div>
+
+      <div class="text-center">
+        <p class="text-gray-500 text-sm mb-3">Demo Credentials:</p>
         <div
-          class="bg-[#FBFBFB] shadow-sm p-6 grid grid-cols-4 gap-2 gap-y-4 rounded-md"
-          id="issue-container"
+          class="bg-[#f8fafc] w-full py-5 rounded-lg flex flex-col items-center justify-center border border-gray-100"
         >
-          <!-- <label for="my_modal_6" class="cursor-pointer">
-            <div
-              class="card w-60 h-64 bg-base-100 shadow-md border-t-3 border-[#00A96E] hover:shadow-lg transition-shadow"
-            >
-              <div>
-                <div class="flex justify-between items-center p-4">
-                  <span><img src="./assets/Open-Status.png" alt="" /></span>
-                  <div class="px-4 bg-red-100 rounded-2xl text-[#EF4444]">
-                    <span class="text-xs font-medium">High</span>
-                  </div>
-                </div>
-
-                <div class="flex justify-between px-4">
-                  <h2 class="text-sm font-semibold text-left">
-                    Fix navigation menu on mobile devices
-                  </h2>
-                </div>
-
-                <p class="text-xs py-2 px-4 text-gray-500 text-left">
-                  The navigation menu doesn't collapse properly on mobile
-                  devices...
-                </p>
-
-                <div class="px-4 py-3 flex gap-1">
-                  <div
-                    class="bg-[#FEECEC] border text-[#EF4444] text-[10px] rounded-3xl px-2 py-1 flex items-center gap-1"
-                  >
-                    <i class="fa-solid fa-bug"></i>Bug
-                  </div>
-                  <div
-                    class="bg-[#FFF8DB] border text-[#D97706] text-[10px] rounded-3xl px-2 py-1 flex items-center gap-1"
-                  >
-                    <i class="fa-regular fa-life-ring"></i>Help Wanted
-                  </div>
-                </div>
-
-                <div class="border-t border-gray-100 mx-4"></div>
-
-                <div class="px-4 py-3 text-xs text-gray-500 text-left">
-                  <h3>#1 by john_doe</h3>
-                  <p class="pt-1">1/15/2024</p>
-                </div>
-              </div>
-            </div>
-          </label> -->
+          <div class="text-left inline-block">
+            <p class="text-sm text-gray-600 mb-1">
+              <span class="font-bold text-gray-800">Username:</span> admin
+            </p>
+            <p class="text-sm text-gray-600">
+              <span class="font-bold text-gray-800">Password:</span> admin123
+            </p>
+          </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
+
+    <script src="./script/index.js"></script>
   </body>
-  <script src="./script/index.js"></script>
 </html>
