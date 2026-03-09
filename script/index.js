@@ -32,6 +32,81 @@ fetch(api)
     applyFilters();
   });
 
+const openIssueModal = (id) => {
+  const modalBox = document.getElementById("dynamic-modal-content");
+
+  modalBox.innerHTML = `
+    <div class="flex justify-center py-10">
+      <span class="loading loading-spinner loading-lg text-[#4A00FF]"></span>
+    </div>
+  `;
+
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const issue = data.data;
+
+      const d = new Date(issue.createdAt);
+      const formattedDate = `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}/${d.getFullYear()}`;
+
+      let priorityBg = "bg-gray-500";
+      if (issue.priority.toLowerCase() === "high") priorityBg = "bg-red-600";
+      if (issue.priority.toLowerCase() === "medium")
+        priorityBg = "bg-yellow-500";
+      if (issue.priority.toLowerCase() === "low") priorityBg = "bg-green-500";
+
+      const statusBg =
+        issue.status.toLowerCase() === "open" ? "bg-[#00A96E]" : "bg-[#8250df]";
+
+      const assigneeName = issue.assignee ? issue.assignee : "Unassigned";
+
+      modalBox.innerHTML = `
+        <h3 class="text-lg font-bold">${issue.title}</h3>
+        
+        <div class="flex items-center gap-2 py-2">
+          <div class="p-1 text-center ${statusBg} rounded-3xl w-20 text-white text-sm capitalize">
+            ${issue.status}
+          </div>
+          <p class="text-sm text-gray-500">• Opened by ${issue.author} •</p>
+          <p class="text-sm text-gray-500">${formattedDate}</p>
+        </div>
+
+        <div class="py-3 flex flex-wrap gap-1">
+          ${issue.labels
+            .map(
+              (label) => `
+            <div class="border ${getLabelStyle(label)} text-[10px] rounded-3xl px-2 py-1 flex items-center gap-1 font-semibold">
+              ${getLabelIcon(label)} ${label}
+            </div>
+          `,
+            )
+            .join("")}
+        </div>
+
+        <p class="py-4 text-gray-700 leading-relaxed">
+          ${issue.description}
+        </p>
+
+        <div class="flex justify-between items-center p-4 bg-gray-50 rounded-md mt-2">
+          <div>
+            <h1 class="text-gray-500 text-sm mb-1">Assignee:</h1>
+            <p class="font-bold text-gray-900">${assigneeName}</p>
+          </div>
+          <div>
+            <h1 class="text-gray-500 text-sm mb-1 text-right">Priority:</h1>
+            <div class="px-4 py-1 ${priorityBg} rounded-2xl text-white inline-block">
+              <span class="text-xs font-medium uppercase tracking-wider">${issue.priority}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-action">
+          <label for="my_modal_6" class="btn bg-[#4A00FF] hover:bg-[#4A00FF]/90 text-white border-none px-8">Close</label>
+        </div>
+      `;
+    });
+};
+
 function applyFilters() {
   issueContainer.innerHTML =
     '<div class="col-span-full w-full flex justify-center items-center py-20"><span class="loading loading-bars loading-xl text-[#4A00FF]"></span></div>';
@@ -79,7 +154,7 @@ function renderIssues(issues) {
 
     const card = document.createElement("div");
     card.innerHTML = `
-      <label for="my_modal_6" class="cursor-pointer h-full block">
+      <label for="my_modal_6" class="cursor-pointer h-full block" onclick="openIssueModal(${issue.id})">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 border-t-4 ${borderTopColor} hover:shadow-md transition-all flex flex-col h-[340px]">
           
           <div class="flex justify-between items-start p-5">
@@ -178,17 +253,22 @@ const getPriorityStyles = (priority) => {
 const getLabelStyle = (label) => {
   const l = label.toLowerCase();
   if (l.includes("bug")) return "text-red-500 border-red-200 bg-[#FEECEC]";
+  if (l.includes("good first issue"))
+    return "text-purple-500 border-purple-200 bg-[#FEECEC]";
   if (l.includes("help") || l.includes("wanted"))
     return "text-yellow-600 border-yellow-200 bg-[#FFF8DB]";
   if (l.includes("enhancement"))
     return "text-green-500 border-green-500 bg-[#BBF7D0]";
-  return "text-gray-500 border-gray-200 bg-transparent";
+  return "text-gray-500 border-gray-200 bg-gray-100";
 };
 
 const getLabelIcon = (label) => {
   const l = label.toLowerCase();
   if (l.includes("bug")) return `<i class="fa-solid fa-bug"></i>`;
+  if (l.includes("good first issue"))
+    return `<i class="fa-regular fa-thumbs-up"></i>`;
+  if (l.includes("enhancement")) return `<i class="fa-regular fa-star"></i>`;
   if (l.includes("help") || l.includes("wanted"))
     return `<i class="fa-regular fa-life-ring"></i>`;
-  return ``;
+  return `<i class="fa-solid fa-align-right"></i>`;
 };
