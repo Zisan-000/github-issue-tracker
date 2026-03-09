@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Github Issue Tracker</title>
+    <style>
+      body {
+        font-family: "Geist", sans-serif;
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="!bg-white w-[520px] h-[743px] mx-auto shadow-md rounded-lg">
+      <div class="text-center items-center">
+        <img
+          src="./assets/github-logo.png"
+          alt="Github Logo"
+          class="mx-auto mt-10 pt-10 pb-4 w-20 !bg-white"
+        />
+        <h1 class="!bg-white font-bold text-xl">GitHub Issue Tracker</h1>
+        <p class="!bg-white font-light text-sm text-[#64748B] pb-6">
+          Sign in to manage your issues
+        </p>
+      </div>
+      <div class="ml-8 w-[456px]">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend font-semibold text-lg">
+            Username
+          </legend>
+          <input
+            type="text"
+            class="input w-[456px]"
+            placeholder="Enter Username"
+            id="username"
+          />
+          <p class="text-purple-600">Default: admin</p>
+        </fieldset>
+      </div>
+      <div class="ml-8 pb-4 w-[456px]">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend font-semibold text-lg">
+            Password
+          </legend>
+          <input
+            type="password"
+            class="input w-[456px]"
+            placeholder="Enter Password"
+            id="password"
+          />
+          <p class="text-purple-600">Default: admin123</p>
+        </fieldset>
+      </div>
+
+      <button
+        onclick="signIn()"
+        class="btn btn-primary rounded-lg ml-8 w-[456px]"
+      >
+        Sign In
+      </button>
+
+      <div class="divider w-[456px] mx-auto">OR</div>
+      <div class="text-center items-center">
+        <p class="pt-3 text-gray-500 text-sm">Demo Credentials:</p>
+        <div
+          class="bg-[#f8fafc] w-[456px] h-[90px] mx-auto rounded-lg flex flex-col items-center justify-center"
+        >
+          <div class="text-left inline-block">
+            <p class="text-sm text-gray-600">
+              <span class="font-bold">Username:</span> admin
+            </p>
+            <p class="text-sm text-gray-600">
+              <span class="font-bold">Password:</span> admin123
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./script/index.js"></script>
+  </body>
+</html>
