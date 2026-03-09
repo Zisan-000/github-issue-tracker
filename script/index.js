@@ -108,32 +108,35 @@ const openIssueModal = (id) => {
 };
 
 function applyFilters() {
+  // 1. Show loading state
   issueContainer.innerHTML =
     '<div class="col-span-full w-full flex justify-center items-center py-20"><span class="loading loading-bars loading-xl text-[#4A00FF]"></span></div>';
 
   clearTimeout(filterTimeout);
 
   filterTimeout = setTimeout(() => {
-    const searchTerm = searchInput
-      ? searchInput.value.toLowerCase().trim()
-      : "";
+    const searchTerm = searchInput ? searchInput.value.trim() : "";
 
-    const filteredIssues = allIssuesData.filter((issue) => {
-      const searchableText =
-        `${issue.title} ${issue.description} ${issue.author}`.toLowerCase();
-      const matchesSearch = searchableText.includes(searchTerm);
+    const fetchUrl =
+      searchTerm !== ""
+        ? `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchTerm}`
+        : "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 
-      if (searchTerm !== "") {
-        return matchesSearch;
-      }
+    fetch(fetchUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        const fetchedIssues = data.data || [];
 
-      const matchesTab =
-        currentFilter === "all" || issue.status.toLowerCase() === currentFilter;
-      return matchesTab;
-    });
+        const finalFilteredIssues = fetchedIssues.filter((issue) => {
+          return (
+            currentFilter === "all" ||
+            issue.status.toLowerCase() === currentFilter
+          );
+        });
 
-    renderIssues(filteredIssues);
-  }, 400);
+        renderIssues(finalFilteredIssues);
+      });
+  });
 }
 
 function renderIssues(issues) {
